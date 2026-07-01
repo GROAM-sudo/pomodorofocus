@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Pomodoro Focus">
+  <rect width="512" height="512" rx="112" fill="#ba4949"/>
+  <path d="M256 119c-91 0-165 69-165 154 0 82 69 148 156 153h18c87-5 156-71 156-153 0-85-74-154-165-154z" fill="#fff"/>
+  <path d="M215 124c13-40 43-65 80-72 8-2 14 8 9 15-20 27-20 52-7 73l-82-16z" fill="#2f855a"/>
+  <path d="M190 136c-27-25-61-30-98-14 29 12 50 33 62 63l36-49zM322 136c27-25 61-30 98-14-29 12-50 33-62 63l-36-49z" fill="#38a169"/>
+  <circle cx="256" cy="273" r="96" fill="#ba4949"/>
+  <path d="M256 191v82l56 35" fill="none" stroke="#fff" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="256" cy="273" r="13" fill="#fff"/>
+</svg>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ba4949" />
+    <meta name="description" content="Application Pomodoro installable pour rester concentre, gerer ses pauses et suivre ses taches." />
+    <title>Pomodoro Focus</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-phase="work" data-theme="liquid" data-mode="light">
+    <aside class="install-banner" id="installBanner" aria-live="polite">
+      <div class="install-left">
+        <img class="app-logo" src="icons/icon.svg" alt="" />
+        <div class="app-meta">
+          <span class="app-name">Pomodoro Focus</span>
+          <span class="app-desc">Installe l'app sur ton PC</span>
+        </div>
+      </div>
+      <button class="install-action-btn" id="installBtn" type="button">Installer</button>
+    </aside>
+
+    <header class="app-header">
+      <div class="header-container">
+        <a class="logo-title" href="#top" aria-label="Pomodoro Focus">
+          <img class="logo-icon" src="icons/icon.svg" alt="" />
+          <span>Pomodoro Focus</span>
+        </a>
+        <div class="header-actions">
+          <button class="ghost-btn" id="reportOpen" type="button">Report</button>
+          <button class="ghost-btn" id="soundToggle" type="button" aria-pressed="true">Son on</button>
+          <button class="ghost-btn" id="settingsOpen" type="button">Reglages</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content" id="top">
+      <section class="timer-section" aria-label="Minuteur Pomodoro">
+        <div class="phase-tabs" role="tablist" aria-label="Modes du minuteur">
+          <button class="phase-tab active" type="button" data-phase-target="work" role="tab">Pomodoro</button>
+          <button class="phase-tab" type="button" data-phase-target="short" role="tab">Pause courte</button>
+          <button class="phase-tab" type="button" data-phase-target="long" role="tab">Pause longue</button>
+        </div>
+
+        <p class="cycle-label" id="cycleLabel">Session #1</p>
+        <div class="timer-display" id="timerDisplay" aria-live="polite">25:00</div>
+
+        <div class="timer-actions">
+          <button class="main-start-btn" id="startPauseBtn" type="button">START</button>
+          <button class="skip-btn" id="skipBtn" type="button" aria-label="Passer au mode suivant">Suivant</button>
+        </div>
+
+        <p class="active-task-label" id="activeTaskLabel">Choisis une tache pour commencer.</p>
+      </section>
+
+      <section class="stats-strip" aria-label="Progression">
+        <div>
+          <span id="donePomodoros">0</span>
+          <small>pomodoros</small>
+        </div>
+        <div>
+          <span id="focusMinutes">0</span>
+          <small>minutes focus</small>
+        </div>
+        <div>
+          <span id="finishEstimate">--:--</span>
+          <small>fin estimee</small>
+        </div>
+      </section>
+
+      <section class="task-section" aria-label="Taches">
+        <div class="task-header-row">
+          <h2>Taches</h2>
+          <button class="ghost-btn compact" id="clearDoneBtn" type="button">Nettoyer</button>
+        </div>
+
+        <form class="task-input-container" id="taskForm">
+          <input id="taskInput" type="text" placeholder="Sur quoi veux-tu te concentrer ?" autocomplete="off" />
+          <input id="taskEstimate" class="estimate-input" type="number" min="1" max="24" value="1" aria-label="Nombre de pomodoros prevus" />
+          <button id="task-add-btn" type="submit" aria-label="Ajouter la tache">+</button>
+        </form>
+
+        <ul class="task-list" id="taskList"></ul>
+      </section>
+
+      <section class="settings-panel" id="settingsPanel" aria-label="Reglages du minuteur" hidden>
+        <div class="settings-card">
+          <div class="settings-title-row">
+            <h2>Reglages</h2>
+            <button class="icon-btn" id="settingsClose" type="button" aria-label="Fermer les reglages">x</button>
+          </div>
+          <div class="settings-grid">
+            <label>
+              <span>Pomodoro</span>
+              <input id="workDuration" type="number" min="1" max="120" />
+            </label>
+            <label>
+              <span>Pause courte</span>
+              <input id="shortDuration" type="number" min="1" max="60" />
+            </label>
+            <label>
+              <span>Pause longue</span>
+              <input id="longDuration" type="number" min="1" max="90" />
+            </label>
+            <label>
+              <span>Cycle long</span>
+              <input id="longInterval" type="number" min="2" max="12" />
+            </label>
+          </div>
+          <div class="style-settings">
+            <label>
+              <span>Ambiance visuelle</span>
+              <select id="visualTheme">
+                <option value="liquid">Liquid glass</option>
+                <option value="neo">Neomorphism</option>
+                <option value="minimal">Minimalism</option>
+                <option value="maximal">Maximalism</option>
+                <option value="pixel">Pixel</option>
+              </select>
+            </label>
+            <label>
+              <span>Mode</span>
+              <select id="displayMode">
+                <option value="light">Clair</option>
+                <option value="dark">Sombre</option>
+              </select>
+            </label>
+            <label>
+              <span>Couleur du theme</span>
+              <input id="themeColor" type="color" value="#ba4949" />
+            </label>
+          </div>
+          <div class="color-presets" aria-label="Couleurs rapides">
+            <button type="button" data-color="#f97316" style="--swatch: #f97316" aria-label="Orange"></button>
+            <button type="button" data-color="#22c55e" style="--swatch: #22c55e" aria-label="Vert"></button>
+            <button type="button" data-color="#3b82f6" style="--swatch: #3b82f6" aria-label="Bleu"></button>
+            <button type="button" data-color="#a855f7" style="--swatch: #a855f7" aria-label="Violet"></button>
+            <button type="button" data-color="#ef4444" style="--swatch: #ef4444" aria-label="Rouge"></button>
+          </div>
+          <div class="settings-actions">
+            <label class="check-row">
+              <input id="autoStartBreaks" type="checkbox" />
+              <span>Demarrer les pauses automatiquement</span>
+            </label>
+            <label class="check-row">
+              <input id="autoStartPomodoros" type="checkbox" />
+              <span>Demarrer les pomodoros automatiquement</span>
+            </label>
+          </div>
+          <button class="save-settings-btn" id="saveSettingsBtn" type="button">Enregistrer</button>
+        </div>
+      </section>
+
+      <section class="settings-panel" id="reportPanel" aria-label="Resume de progression" hidden>
+        <div class="settings-card report-card">
+          <div class="settings-title-row">
+            <div>
+              <h2>Resume</h2>
+              <p class="panel-subtitle">Tes derniers jours de concentration.</p>
+            </div>
+            <button class="icon-btn" id="reportClose" type="button" aria-label="Fermer le resume">x</button>
+          </div>
+          <div class="report-hero">
+            <div>
+              <span id="reportTotalPomodoros">0</span>
+              <small>pomodoros termines</small>
+            </div>
+            <div>
+              <span id="reportTotalMinutes">0</span>
+              <small>minutes de focus</small>
+            </div>
+          </div>
+          <div class="report-bars" id="reportBars"></div>
+          <p class="report-note" id="reportNote">Termine une session pour voir ta progression ici.</p>
+        </div>
+      </section>
+
+      <section class="landing-text-container" aria-label="Aide Pomodoro">
+        <div class="container">
+          <h2 class="catchcopy__header">Qu'est-ce que Pomodoro Focus ?</h2>
+          <p class="catchcopy__text">
+            Une application Pomodoro installable qui fonctionne dans le navigateur et sur PC. Elle aide a organiser le travail en sessions de concentration, pauses courtes et pauses longues.
+          </p>
+        </div>
+        <div class="container">
+          <h2 class="catchcopy__header">Comment l'utiliser ?</h2>
+          <ol class="features__list-ol">
+            <li>Ajoute les taches du jour.</li>
+            <li>Indique le nombre de pomodoros prevus pour chaque tache.</li>
+            <li>Selectionne une tache, lance le minuteur, puis reste concentre.</li>
+            <li>Prends une pause quand la session se termine.</li>
+          </ol>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__sitemap container">
+        <a href="#top">APP</a>
+        <a href="#settingsOpen">REGLAGES</a>
+        <a href="#taskInput">TACHES</a>
+      </div>
+      <div class="footer__me">Pomodoro Focus - PWA locale</div>
+      <div class="footer__allrights container">Tes donnees restent dans ton navigateur.</div>
+    </footer>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
